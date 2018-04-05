@@ -4,8 +4,6 @@ IMAGE_NAME = node-graphql
 PROJECT_NAME = graphql
 CONTAINER_NAME = server
 
-install: ## Install project
-	./script.sh install
 start:## start docker containers
 	make down
 	make up
@@ -32,5 +30,9 @@ ssh: ## Connect to container for ssh protocol
 
 log: ## Show container logs
 	@docker-compose -p $(PROJECT_NAME) logs -f
+
+install: ## Install project
+	docker run -it --rm -v $(PWD)/app:/app -w /app node:8.11.1-slim yarn install
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
